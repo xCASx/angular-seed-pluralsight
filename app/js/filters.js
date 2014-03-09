@@ -13,4 +13,19 @@ eventsApp.filter('durations', function() {
                 return 'Full Day';
         }
     }
-})
+});
+
+eventsApp.filter('levelIcon', function($sce) {
+    return function(level) {
+        var result = '';
+        switch(level) {
+            case 'Advanced':
+                result += '<span class="icon-fire"></span>';
+            case 'Intermediate':
+                result += '<span class="icon-fire"></span>';
+            case 'Introductory':
+                result += '<span class="icon-fire"></span>';
+        }
+        return $sce.trustAsHtml(level + ' ' + result);
+    }
+});
