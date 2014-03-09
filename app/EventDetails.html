@@ -16,20 +16,20 @@
             </div>
         </div>
         <div ng-controller="EventController" style="padding-left: 20px; padding-right: 20px">
-            <img ng-src="{{event.imageUrl}}" alt="{{event.name}}"/>
+            <img ng-cloak ng-src="{{event.imageUrl}}" alt="{{event.name}}"/>
             <div class="row">
                 <div class="span11">
-                    <h2>{{event.name | uppercase}}</h2>
+                    <h2 ng-cloak>{{event.name | uppercase}}</h2>
                 </div>
             </div>
             <div class="row">
                 <div class="span3">
-                    <div><strong>Date:</strong> {{event.date}}</div>
-                    <div><strong>Time:</strong> {{event.time}}</div>
-                    <div><strong>Price:</strong> {{event.cost | currency}}</div>
+                    <div ng-cloak><strong>Date:</strong> {{event.date}}</div>
+                    <div ng-cloak><strong>Time:</strong> {{event.time}}</div>
+                    <div ng-cloak><strong>Price:</strong> {{event.cost | currency}}</div>
                 </div>
                 <div class="span4">
-                    <address>
+                    <address ng-cloak>
                         <strong>Address:</strong><br/>
                         {{event.location.address}}<br/>
                         {{event.location.city}}, {{event.location.province}}
@@ -60,19 +60,19 @@
                                 <i class="icon-chevron-up"></i>
                             </div>
                             <div class="badge badge-inverse">
-                                <div>{{session.upVoteCount}}</div>
+                                <div ng-cloak>{{session.upVoteCount}}</div>
                             </div>
                             <div class="votingButton" ng-click="downVoteSession(session)">
                                 <i class="icon-chevron-down"></i>
                             </div>
                         </div>
                         <div class="well span9">
-                            <h4 class="well-title">{{session.name}}</h4>
-                            <h6 style="margin-top: -10px">{{session.creatorName}}</h6>
-                            <span>Duration: {{session.duration | durations}}</span><br/>
-                            <span>Level: {{session.level}}</span>
+                            <h4 class="well-title" ng-cloak>{{session.name}}</h4>
+                            <h6 style="margin-top: -10px" ng-cloak>{{session.creatorName}}</h6>
+                            <span ng-cloak>Duration: {{session.duration | durations}}</span><br/>
+                            <span ng-cloak>Level: {{session.level}}</span>
 
-                            <p>{{session.abstract}}</p>
+                            <p ng-cloak>{{session.abstract}}</p>
                         </div>
                     </div>
                 </li>
