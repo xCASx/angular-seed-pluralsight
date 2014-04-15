@@ -93,6 +93,8 @@ StaticServlet.prototype.handleRequest = function(req, res) {
   var parts = path.split('/');
   if (parts[parts.length-1].charAt(0) === '.')
     return self.sendForbidden_(req, res, path);
+  if (parts[parts.length-1] == 'data')
+    return self.sendJson(req, res);
   fs.stat(path, function(err, stat) {
     if (err)
       return self.sendMissing_(req, res, path);
@@ -101,6 +103,19 @@ StaticServlet.prototype.handleRequest = function(req, res) {
     return self.sendFile_(req, res, path);
   });
 }
+
+StaticServlet.prototype.sendJson = function (req, res) {
+  fs.readFile('./data.json', 'utf8', function (err, data) {
+      if (err) {
+          console.log('Error: ' + err);
+          return;
+      }
+      data = JSON.parse(data);
+      console.dir(data);
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(data, null, 3));
+  });
+};
 
 StaticServlet.prototype.sendError_ = function(req, res, error) {
   res.writeHead(500, {

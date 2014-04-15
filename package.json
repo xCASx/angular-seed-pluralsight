@@ -1,8 +1,9 @@
 {
   "name": "angularjs-seed",
   "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "repository": "https://github.com/xCASx/angular-seed-pluralsight",
   "devDependencies": {
+    "express": "~3.4.7",
     "phantomjs" : "~1.9",
     "karma" : "~0.10",
     "karma-junit-reporter" : "~0.1",
