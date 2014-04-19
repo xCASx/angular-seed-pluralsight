@@ -11,6 +11,7 @@ var DEFAULT_PORT = 8000;
 function main(argv) {
   new HttpServer({
     'GET': createServlet(StaticServlet),
+    'POST': createPostServlet(PostServlet),
     'HEAD': createServlet(StaticServlet)
   }).start(Number(argv[2]) || DEFAULT_PORT);
 }
@@ -25,6 +26,11 @@ function escapeHtml(value) {
 function createServlet(Class) {
   var servlet = new Class();
   return servlet.handleRequest.bind(servlet);
+}
+
+function createPostServlet(Class) {
+    var servlet = new Class();
+    return servlet.handleRequest.bind(servlet);
 }
 
 /**
@@ -71,6 +77,11 @@ HttpServer.prototype.handleRequest_ = function(req, res) {
  */
 function StaticServlet() {}
 
+/**
+ * Handles post requests.
+ */
+function PostServlet() {}
+
 StaticServlet.MimeMap = {
   'txt': 'text/plain',
   'html': 'text/html',
@@ -93,8 +104,6 @@ StaticServlet.prototype.handleRequest = function(req, res) {
   var parts = path.split('/');
   if (parts[parts.length-1].charAt(0) === '.')
     return self.sendForbidden_(req, res, path);
-  if (parts[parts.length-1] == 'data')
-    return self.sendJson(req, res);
   fs.stat(path, function(err, stat) {
     if (err)
       return self.sendMissing_(req, res, path);
@@ -104,17 +113,27 @@ StaticServlet.prototype.handleRequest = function(req, res) {
   });
 }
 
-StaticServlet.prototype.sendJson = function (req, res) {
-  fs.readFile('./data.json', 'utf8', function (err, data) {
-      if (err) {
-          console.log('Error: ' + err);
-          return;
-      }
-      data = JSON.parse(data);
-      console.dir(data);
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(data, null, 3));
-  });
+PostServlet.prototype.handleRequest = function (req, res) {
+    var path = (req.url.pathname).replace('//', '/').replace(/%(..)/g, function (match, hex) {
+        return String.fromCharCode(parseInt(hex, 16));
+    });
+    req.on('data', function (chunk) {
+        fs.writeFile("../app/" + path, chunk, function (err) {
+            if (err) {
+                console.log(err);
+                res.writeHead(500, {
+                    'Content-Type': 'text/plain'
+                });
+                res.write('<pre>' + escapeHtml(util.inspect(error)) + '</pre>');
+            } else {
+                console.log("The file was saved!");
+                res.writeHead(200, {
+                    'Content-Type': 'text/plain'
+                });
+            }
+            res.end();
+        });
+    });
 };
 
 StaticServlet.prototype.sendError_ = function(req, res, error) {
