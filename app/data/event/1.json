@@ -11,6 +11,7 @@
     "imageUrl": "/img/angularjs-logo.png",
     "sessions": [
         {
+            "id": 1,
             "name": "Directives Masterclass",
             "creatorName": "Bob Smith",
             "duration": 1,
@@ -19,6 +20,7 @@
             "upVoteCount": 0
         },
         {
+            "id": 2,
             "name": "Scopes for fun and profit",
             "creatorName": "John Doe",
             "duration": 2,
@@ -27,6 +29,7 @@
             "upVoteCount": 0
         },
         {
+            "id": 3,
             "name": "Well Behaved Controllers",
             "creatorName": "John Doe",
             "duration": 4,
